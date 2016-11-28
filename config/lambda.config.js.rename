@@ -1,0 +1,11 @@
+const { name, description, version } = require('../package.json');
+
+export default {
+  accessKeyId: '<Your AWS Access Key Id Here>',
+  secretAccessKey: '<Your AWS Access Secret Key Here>',
+  role: '<Your AWS Lamba Execution ARN Here>',
+  functionName: name,
+  description: `${description} (version ${version})`,
+  region: 'us-east-1',
+  handler: 'index.handler'
+};

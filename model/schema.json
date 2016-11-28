@@ -1,0 +1,48 @@
+{
+  "intents": [
+    {
+      "intent": "AMAZON.CancelIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "MovieInfo",
+      "slots": [
+        {
+          "name": "Name",
+          "type": "MOVIE_NAMES"
+        }
+      ]
+    },
+    {
+      "intent": "SimilarMovies",
+      "slots": [
+        {
+          "name": "Name",
+          "type": "MOVIE_NAMES"
+        }
+      ]
+    },
+    {
+      "intent": "ActorMovies",
+      "slots": [
+        {
+          "name": "NameOne",
+          "type": "ACTOR_NAMES"
+        },
+        {
+          "name": "NameTwo",
+          "type": "ACTOR_NAMES"
+        },
+        {
+          "name": "NameThree",
+          "type": "ACTOR_NAMES"
+        }
+      ]
+    }
+  ]
+}
