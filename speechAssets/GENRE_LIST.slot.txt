@@ -1,0 +1,17 @@
+Action
+Adventure
+Animation
+Comedy
+Crime
+Documentary
+Family
+Fantasy
+History
+Horror
+Romance
+Romantic
+Science Fiction
+SiFi
+Si Fi
+Thriller
+War

@@ -1,0 +1,21 @@
+MovieInfo say about {Name}
+MovieInfo say details about {Name}
+MovieInfo find about {Name}
+MovieInfo about {Name}
+Recommendation suggest me a movie
+Recommendation suggest a movie
+Recommendation recommend me a movie
+Recommendation recommend a movie
+Recommendation suggest me a {Genre} movie
+Recommendation suggest a {Genre} movie
+Recommendation recommend me a {Genre} movie
+Recommendation recommend a {Genre} movie
+FavouriteGenre {Genre} is my favourite genre
+FavouriteGenre my favourite genre is {Genre}
+FavouriteGenre set my favourite genre as {Genre}
+PersonMovies find movies acted by {PersonName}
+PersonMovies find movies by {PersonName}
+PersonMovies find movies casting {PersonName}
+PersonMovies find {PersonName} movies
+AMAZON.YesIntent yes
+AMAZON.NoIntent no
