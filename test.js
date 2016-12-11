@@ -28,7 +28,7 @@ describe('Streamer', function () {
         });
     });
 
-    xit('test 1', function (done) {
+    it('Search for movie and iterate to second option and say yes to both casts and similar movies', function (done) {
         this.timeout(20000);
         alexa.spoken('find about {lord of the rings}', function (error, response) {
             alexa.spoken('no', function (error, response) {
@@ -43,7 +43,7 @@ describe('Streamer', function () {
         });
     });
 
-    xit('test 2', function (done) {
+    it('Ask for a movie suggestion and say yes twice to know about 2 movies', function (done) {
         this.timeout(20000);
         alexa.spoken('suggest a {war} movie', function (error, response) {
             alexa.spoken('yes', function (error, response) {
@@ -56,7 +56,7 @@ describe('Streamer', function () {
         });
     });
 
-    xit('test 2', function (done) {
+    it('Ask for movie suggestion then ask the user set a favorite genre which he/she will set and again ask for a movie suggestion', function (done) {
         this.timeout(20000);
         alexa.spoken('suggest a movie', function (error, response) {
             alexa.spoken('my favourite genre is {war}', function (error, response) {
@@ -72,7 +72,7 @@ describe('Streamer', function () {
         });
     });
 
-    it('test 2', function (done) {
+    it('Ask for top movies my a actor', function (done) {
         this.timeout(20000);
         alexa.spoken('find movies by {will smith}', function (error, response) {
             alexa.spoken('yes', function () {
