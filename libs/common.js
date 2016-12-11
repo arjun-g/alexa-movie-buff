@@ -2,6 +2,7 @@
 
 const CONSTANTS = require('./constants')
 
+//To process common scenarios like help, stop and cancel intent
 class Common{
 
     constructor(movieBuff){
@@ -13,6 +14,7 @@ class Common{
         var self = this
         switch(movieBuff.event.request.intent.name){
             case CONSTANTS.HELP_INTENT:{
+                //When user asks for help say the help message
                 var sessionAttribute = {
                     intentSequence: CONSTANTS.HELP_INTENT
                 }
@@ -31,6 +33,7 @@ class Common{
             case CONSTANTS.STOP_INTENT:
             case CONSTANTS.CANCEL_INTENT:
             {
+                //When encountering a STOP/CANCEL intent say Goodbye 
                 movieBuff.context.succeed(
                     movieBuff.generateResponse(
                         movieBuff.buildSpeechletResponse('Goodbye!', true),

@@ -1,3 +1,4 @@
+//Constants associated with the application
 module.exports = {
     MOVIE_INFO_INTENT: 'MovieInfo',
     MOVIE_RECOMMENDATION: 'Recommendation',

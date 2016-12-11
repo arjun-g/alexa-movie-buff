@@ -20,6 +20,6 @@ gulp.task('copy', ['clean'], () => {
 
 gulp.task('npm', ['copy'], () => {
     return gulp.src('tmp/package.json')
-           .pipe(install({production: true}))
+           .pipe(install())
 })
 
