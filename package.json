@@ -30,6 +30,11 @@
   },
   "devDependencies": {
     "bespoken-tools": "^0.9.15",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-install": "^0.6.0",
+    "gulp-zip": "^3.2.0",
     "mocha": "^3.2.0"
   }
 }

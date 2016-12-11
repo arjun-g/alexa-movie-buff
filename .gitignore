@@ -3,3 +3,5 @@ node_modules/
 npm-debug.log
 /config/lambda.config.js
 /KEYS
+/tmp
+/dist
