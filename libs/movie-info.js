@@ -13,34 +13,48 @@ class MovieInfo{
 
     process(){
         var movieBuff = this.movieBuff
+        console.log('#######################################################')
+        console.log(movieBuff.event.request.intent.name)
+        console.log(movieBuff.event.session.attributes.intentSequence)
+        console.log('#######################################################')
         switch(movieBuff.event.request.intent.name){
             case CONSTANTS.MOVIE_INFO_INTENT:{ //When MovieInfo intent is called along with the movie name in the slot
-                MDB.searchMovies(movieBuff.event.request.intent.slots.Name.value)
-                .then(movies => {
-                    var sessionAttribute = {
-                        inputName: movieBuff.event.request.intent.slots.Name.value,
-                        movies: movies,
-                        movieIndex: 0,
-                        intentSequence: CONSTANTS.MOVIE_INFO_INTENT
-                    }
-                    //Ask user if this movie is what the user is expecting
-                    var movie = movies[0]
-                    var response = '<p>did you mean <w role="ivona:NN">' + movie.title + '</w> ?</p>'                     
-                    movieBuff.context.succeed(
-                        movieBuff.generateResponse(
-                            movieBuff.buildSpeechletResponse(response, false),
-                            sessionAttribute
+                if(movieBuff.event.request.intent.slots.Name && movieBuff.event.request.intent.slots.Name.value){
+                    MDB.searchMovies(movieBuff.event.request.intent.slots.Name.value)
+                    .then(movies => {
+                        var sessionAttribute = {
+                            inputName: movieBuff.event.request.intent.slots.Name.value,
+                            movies: movies,
+                            movieIndex: 0,
+                            intentSequence: CONSTANTS.MOVIE_INFO_INTENT
+                        }
+                        //Ask user if this movie is what the user is expecting
+                        var movie = movies[0]
+                        var response = '<p>did you mean <w role="ivona:NN">' + movie.title + '</w> ?</p>'                     
+                        movieBuff.context.succeed(
+                            movieBuff.generateResponse(
+                                movieBuff.buildSpeechletResponse(response, false),
+                                sessionAttribute
+                            )
                         )
-                    )
-                })
-                .catch(err => {
+                    })
+                    .catch(err => {
+                        movieBuff.context.succeed(
+                            movieBuff.generateResponse(
+                                movieBuff.buildSpeechletResponse('Failed to find the movie', true),
+                                {}
+                            )
+                        )
+                    })
+                }
+                else{
                     movieBuff.context.succeed(
                         movieBuff.generateResponse(
                             movieBuff.buildSpeechletResponse('Failed to find the movie', true),
                             {}
                         )
                     )
-                })
+                }
                 break;
             }
             case CONSTANTS.YES_INTENT: {
@@ -48,6 +62,7 @@ class MovieInfo{
                 if(sessionAttribute.intentSequence === CONSTANTS.MOVIE_INFO_INTENT){ //When the user answers YES after alexa asks if this the movie that user expects
                     sessionAttribute.intentSequence = sessionAttribute.intentSequence + ';' + CONSTANTS.YES_INTENT
                     var movie = sessionAttribute.movies[sessionAttribute.movieIndex]
+                    sessionAttribute.movies = [movie]
                     //Respond with movie details and ask user where he/she likes to know about the movie casts
                     var response = '<p><w role="ivona:NN">' + movie.title + '</w>'
                         + ' released on '
@@ -66,7 +81,7 @@ class MovieInfo{
                 }
                 else if(sessionAttribute.intentSequence === CONSTANTS.MOVIE_INFO_INTENT + ';' + CONSTANTS.YES_INTENT){ //When the user answer YES after alexa asks if he/she wants to know about a movie casts
                     sessionAttribute.intentSequence = CONSTANTS.MOVIE_INFO_INTENT + ';' + CONSTANTS.YES_INTENT + ';' + CONSTANTS.YES_INTENT
-                    var movie = sessionAttribute.movies[sessionAttribute.movieIndex]
+                    var movie = sessionAttribute.movies[0]
                     MDB.movieCasts(movie.id)
                     .then(casts => {
                         var response = '<p>the casts comprises of '
@@ -82,8 +97,8 @@ class MovieInfo{
                         )
                     })
                 }
-                else if(sessionAttribute.intentSequence === CONSTANTS.MOVIE_INFO_INTENT + ';' + CONSTANTS.YES_INTENT + ';' + CONSTANTS.YES_INTENT || sessionAttribute.intentSequence === CONSTANTS.MOVIE_INFO_INTENT + ';' + CONSTANTS.NO_INTENT + ';' + CONSTANTS.YES_INTENT){ //When the user answers YES when asked whether he/she wants to know similar movies
-                    var movie = sessionAttribute.movies[sessionAttribute.movieIndex]
+                else if(sessionAttribute.intentSequence === CONSTANTS.MOVIE_INFO_INTENT + ';' + CONSTANTS.YES_INTENT + ';' + CONSTANTS.YES_INTENT || sessionAttribute.intentSequence === CONSTANTS.MOVIE_INFO_INTENT + ';' + CONSTANTS.YES_INTENT + ';' + CONSTANTS.NO_INTENT){ //When the user answers YES when asked whether he/she wants to know similar movies
+                    var movie = sessionAttribute.movies[0]
                     MDB.similarMovies(movie.id)
                     .then(movies => {
                         var response = '<p>some of the silimar movies are '
@@ -94,7 +109,7 @@ class MovieInfo{
                         movieBuff.context.succeed(
                             movieBuff.generateResponse(
                                 movieBuff.buildSpeechletResponse(response, true),
-                                sessionAttribute
+                                {}
                             )
                         )
                     })
@@ -109,7 +124,7 @@ class MovieInfo{
                         movieBuff.context.succeed(
                             movieBuff.generateResponse(
                                 movieBuff.buildSpeechletResponse('<p>Sorry couldn\'t find movie</p>', true),
-                                sessionAttribute
+                                {}
                             )
                         )
                     }
@@ -133,11 +148,11 @@ class MovieInfo{
                         )
                     )
                 }
-                else if(sessionAttribute.intentSequence === CONSTANTS.MOVIE_INFO_INTENT + ';' + CONSTANTS.YES_INTENT + ';' + CONSTANTS.NO_INTENT){ //When user asnwers NO when alexa ask if they want to know similar movies
+                else if(sessionAttribute.intentSequence === CONSTANTS.MOVIE_INFO_INTENT + ';' + CONSTANTS.YES_INTENT + ';' + CONSTANTS.NO_INTENT || sessionAttribute.intentSequence === CONSTANTS.MOVIE_INFO_INTENT + ';' + CONSTANTS.YES_INTENT + ';' + CONSTANTS.YES_INTENT){ //When user asnwers NO when alexa ask if they want to know similar movies
                     movieBuff.context.succeed(
                         movieBuff.generateResponse(
                             movieBuff.buildSpeechletResponse('Goodbye!', true),
-                            sessionAttribute
+                            {}
                         )
                     )
                 }

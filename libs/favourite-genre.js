@@ -19,26 +19,36 @@ class FavouriteGenre{
                 var sessionAttribute = {
                     intentSequence: CONSTANTS.MOVIE_RECOMMENDATION
                 }
-                MDB.getGenreId(movieBuff.event.request.intent.slots.Genre.value.toLowerCase())
-                .then(genreId => {
-                    if(genreId !== -1){
-                        DB.setFavouriteGenre(movieBuff.event.session.user.userId, genreId)
-                        movieBuff.context.succeed(
-                            movieBuff.generateResponse(
-                                movieBuff.buildSpeechletResponse(movieBuff.event.request.intent.slots.Genre.value.toLowerCase() + ' is set as your favourite genre. thank you.', true),
-                                sessionAttribute
+                if(movieBuff.event.request.intent.slots.Genre && movieBuff.event.request.intent.slots.Genre.value){
+                    MDB.getGenreId(movieBuff.event.request.intent.slots.Genre.value.toLowerCase())
+                    .then(genreId => {
+                        if(genreId !== -1){
+                            DB.setFavouriteGenre(movieBuff.event.session.user.userId, genreId)
+                            movieBuff.context.succeed(
+                                movieBuff.generateResponse(
+                                    movieBuff.buildSpeechletResponse(movieBuff.event.request.intent.slots.Genre.value.toLowerCase() + ' is set as your favourite genre. thank you.', true),
+                                    sessionAttribute
+                                )
                             )
-                        )
-                    }
-                    else{
-                        movieBuff.context.succeed(
-                            movieBuff.generateResponse(
-                                movieBuff.buildSpeechletResponse('sorry cannot find the genre', true),
-                                sessionAttribute
+                        }
+                        else{
+                            movieBuff.context.succeed(
+                                movieBuff.generateResponse(
+                                    movieBuff.buildSpeechletResponse('sorry cannot find the genre', true),
+                                    {}
+                                )
                             )
+                        }
+                    })
+                }
+                else{
+                    movieBuff.context.succeed(
+                        movieBuff.generateResponse(
+                            movieBuff.buildSpeechletResponse('sorry cannot find the genre', true),
+                            {}
                         )
-                    }
-                })
+                    )
+                }
             }
         }
     }

@@ -47,7 +47,7 @@ class GenreRecommendation{
                             // If the user hasn't set a favourite genre already ask him/her to set a favorite genre
                             movieBuff.context.succeed(
                                 movieBuff.generateResponse(
-                                    movieBuff.buildSpeechletResponse('<p>please set you favourite genre first. to set a favourite genre say something like </p><p>alexa say movie buff my favourite genre is science fiction</p>', false),
+                                    movieBuff.buildSpeechletResponse('<p>please set you favourite genre first. to set a favourite genre say something like </p><p>alexa say movie trivia my favourite genre is science fiction</p>', false),
                                     sessionAttribute
                                 )
                             )

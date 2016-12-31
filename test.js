@@ -31,12 +31,49 @@ describe('Streamer', function () {
     it('Search for movie and iterate to second option and say yes to both casts and similar movies', function (done) {
         this.timeout(20000);
         alexa.spoken('find about {lord of the rings}', function (error, response) {
-            alexa.spoken('no', function (error, response) {
+            alexa.spoken('yes', function (error, response) {
                 alexa.spoken('yes', function (error, response) {
                     alexa.spoken('yes', function (error, response) {
-                        alexa.spoken('yes', function (error, response) {
-                            done()
-                        })
+                        done()
+                    })
+                })
+            })
+        });
+    });
+
+    it('Search for movie and iterate to second option and say no casts and yes to similar movies', function (done) {
+        this.timeout(20000);
+        alexa.spoken('find about {lord of the rings}', function (error, response) {
+            alexa.spoken('yes', function (error, response) {
+                alexa.spoken('no', function (error, response) {
+                    alexa.spoken('yes', function (error, response) {
+                        done()
+                    })
+                })
+            })
+        });
+    });
+
+    it('Search for movie and iterate to second option and say yes casts and no to similar movies', function (done) {
+        this.timeout(20000);
+        alexa.spoken('find about {lord of the rings}', function (error, response) {
+            alexa.spoken('yes', function (error, response) {
+                alexa.spoken('yes', function (error, response) {
+                    alexa.spoken('no', function (error, response) {
+                        done()
+                    })
+                })
+            })
+        });
+    });
+
+    it('Search for movie and iterate to second option and say no to both casts and similar movies', function (done) {
+        this.timeout(20000);
+        alexa.spoken('find about {lord of the rings}', function (error, response) {
+            alexa.spoken('yes', function (error, response) {
+                alexa.spoken('no', function (error, response) {
+                    alexa.spoken('no', function (error, response) {
+                        done()
                     })
                 })
             })
@@ -72,12 +109,19 @@ describe('Streamer', function () {
         });
     });
 
-    it('Ask for top movies my a actor', function (done) {
+    it('Ask for top movies by a actor', function (done) {
         this.timeout(20000);
         alexa.spoken('find movies by {will smith}', function (error, response) {
             alexa.spoken('yes', function () {
                 done();
             })
+        });
+    });
+
+    it('Ask for top movies by a actor no actor detail', function (done) {
+        this.timeout(20000);
+        alexa.spoken('find movies by {}', function (error, response) {
+            done();
         });
     });
 

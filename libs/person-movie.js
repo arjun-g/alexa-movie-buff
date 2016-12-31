@@ -16,40 +16,50 @@ class PersonMovie{
         var self = this
         switch(movieBuff.event.request.intent.name){
             case CONSTANTS.PERSON_MOVIES_INTENT:{
-                var personName = movieBuff.event.request.intent.slots.PersonName.value.toLowerCase()
-                MDB.searchPerson(personName)
-                .then(persons => {
-                    if(persons.length === 0){
-                        return movieBuff.context.succeed(
+                if(movieBuff.event.request.intent.slots.PersonName && movieBuff.event.request.intent.slots.PersonName.value){
+                    var personName = movieBuff.event.request.intent.slots.PersonName.value.toLowerCase()
+                    MDB.searchPerson(personName)
+                    .then(persons => {
+                        if(persons.length === 0){
+                            return movieBuff.context.succeed(
+                                movieBuff.generateResponse(
+                                    movieBuff.buildSpeechletResponse('<p>Sorry couldn\'t find the person</p>', true),
+                                    {}
+                                )
+                            )    
+                        }
+                        var sessionAttribute = {
+                            inputName: personName,
+                            intentSequence: CONSTANTS.PERSON_MOVIES_INTENT,
+                            persons: persons,
+                            personIndex: 0
+                        }
+                        var person = persons[0]
+                        var response = '<p>did you mean <w role="ivona:NN">' + person.name + '</w> ?</p>'
+                        movieBuff.context.succeed(
+                            movieBuff.generateResponse(
+                                movieBuff.buildSpeechletResponse(response, false),
+                                sessionAttribute
+                            )
+                        )
+                    })
+                    .catch(err => {
+                        movieBuff.context.succeed(
                             movieBuff.generateResponse(
                                 movieBuff.buildSpeechletResponse('<p>Sorry couldn\'t find the person</p>', true),
                                 {}
                             )
-                        )    
-                    }
-                    var sessionAttribute = {
-                        inputName: personName,
-                        intentSequence: CONSTANTS.PERSON_MOVIES_INTENT,
-                        persons: persons,
-                        personIndex: 0
-                    }
-                    var person = persons[0]
-                    var response = '<p>did you mean <w role="ivona:NN">' + person.name + '</w> ?</p>'
-                    movieBuff.context.succeed(
-                        movieBuff.generateResponse(
-                            movieBuff.buildSpeechletResponse(response, false),
-                            sessionAttribute
                         )
-                    )
-                })
-                .catch(err => {
+                    })
+                }
+                else{
                     movieBuff.context.succeed(
                         movieBuff.generateResponse(
                             movieBuff.buildSpeechletResponse('<p>Sorry couldn\'t find the person</p>', true),
                             {}
                         )
                     )
-                })
+                }
                 break;
             }
             case CONSTANTS.YES_INTENT:{

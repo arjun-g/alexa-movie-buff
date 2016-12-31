@@ -21,26 +21,34 @@ class MovieBuff {
             //Respond with a welcome message when the skill is launched
             self.context.succeed(
                 self.generateResponse(
-                    self.buildSpeechletResponse('<p>welcome to movie buff.</p><p>if you want to know about a movie simple say something like </p><p>Alexa ask movie buff about lord of the rings</p><p>ask for help to know more</p>', true),
+                    self.buildSpeechletResponse('<p>welcome to movie trivia.</p><p>if you want to know about a movie simple say something like </p><p>Alexa ask movie trivia about lord of the rings</p><p>ask for help to know more</p>', false),
                     {}
                 )
             )
         }
         else if(self.event.request.type === 'IntentRequest'){
+            try{
+                //In case of an IntentRequest call all the handlers which will take action depending on the incoming request
+                var commonHandler = new CommonHandler(this)
+                var movieInfoHandler = new MovieInfoHandler(this)
+                var genreRecommendationHandler = new GenreRecommendationHandler(this)
+                var favouriteGenreHandler = new FavouriteGenreHandler(this)
+                var personMovieHandler = new PersonMovieHandler(this)
 
-            //In case of an IntentRequest call all the handlers which will take action depending on the incoming request
-            var commonHandler = new CommonHandler(this)
-            var movieInfoHandler = new MovieInfoHandler(this)
-            var genreRecommendationHandler = new GenreRecommendationHandler(this)
-            var favouriteGenreHandler = new FavouriteGenreHandler(this)
-            var personMovieHandler = new PersonMovieHandler(this)
-
-            commonHandler.process()
-            movieInfoHandler.process()
-            genreRecommendationHandler.process()
-            favouriteGenreHandler.process()
-            personMovieHandler.process()
-
+                commonHandler.process()
+                movieInfoHandler.process()
+                genreRecommendationHandler.process()
+                favouriteGenreHandler.process()
+                personMovieHandler.process()
+            }
+            catch(ex){
+                self.context.succeed(
+                    self.generateResponse(
+                        self.buildSpeechletResponse('<p>Movie Trivia was unable to process your request. Please try again.</p>', true),
+                        {}
+                    )
+                )
+            }
         }
     }
 
