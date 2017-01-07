@@ -4,6 +4,8 @@ const CONSTANTS = require('./constants'),
       _ = require('underscore')._,
       MDB = require('./movies-db')
 
+const logger = require('./logger')
+
 //To process all scenarios of MovieInfo intent
 class MovieInfo{
 
@@ -13,10 +15,6 @@ class MovieInfo{
 
     process(){
         var movieBuff = this.movieBuff
-        console.log('#######################################################')
-        console.log(movieBuff.event.request.intent.name)
-        console.log(movieBuff.event.session.attributes.intentSequence)
-        console.log('#######################################################')
         switch(movieBuff.event.request.intent.name){
             case CONSTANTS.MOVIE_INFO_INTENT:{ //When MovieInfo intent is called along with the movie name in the slot
                 if(movieBuff.event.request.intent.slots.Name && movieBuff.event.request.intent.slots.Name.value){
@@ -58,7 +56,7 @@ class MovieInfo{
                 break;
             }
             case CONSTANTS.YES_INTENT: {
-                var sessionAttribute = movieBuff.event.session.attributes
+                var sessionAttribute = movieBuff.sessionAttributes()
                 if(sessionAttribute.intentSequence === CONSTANTS.MOVIE_INFO_INTENT){ //When the user answers YES after alexa asks if this the movie that user expects
                     sessionAttribute.intentSequence = sessionAttribute.intentSequence + ';' + CONSTANTS.YES_INTENT
                     var movie = sessionAttribute.movies[sessionAttribute.movieIndex]
@@ -117,7 +115,7 @@ class MovieInfo{
                 break;
             }
             case CONSTANTS.NO_INTENT: {
-                var sessionAttribute = movieBuff.event.session.attributes
+                var sessionAttribute = movieBuff.sessionAttributes()
                 if(sessionAttribute.intentSequence === CONSTANTS.MOVIE_INFO_INTENT){ //When user says NO when askd if this the movie that user expected
                     sessionAttribute.movieIndex++
                     if(sessionAttribute.movieIndex === sessionAttribute.movies.length){ //When no more movies is found

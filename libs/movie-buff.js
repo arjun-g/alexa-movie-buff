@@ -8,14 +8,22 @@ var _ = require('underscore')._,
     CommonHandler = require('./common'),
     CONSTANTS = require('./constants')
 
+const logger = require('./logger')
+
 class MovieBuff {
 
     constructor(event, context){
+        logger.log(event)
+        logger.log(context)
         this.event = event
         this.context = context
     }
 
     process(){
+        logger.log('#######################################################')
+        logger.log(this.event.request && this.event.request.intent && this.event.request.intent.name)
+        logger.log(this.sessionAttributes())
+        logger.log('#######################################################')
         var self = this
         if(self.event.request.type === 'LaunchRequest'){
             //Respond with a welcome message when the skill is launched
@@ -42,6 +50,7 @@ class MovieBuff {
                 personMovieHandler.process()
             }
             catch(ex){
+                logger.error(ex)
                 self.context.succeed(
                     self.generateResponse(
                         self.buildSpeechletResponse('<p>Movie Trivia was unable to process your request. Please try again.</p>', true),
@@ -54,6 +63,7 @@ class MovieBuff {
 
     //Builds the SSML speech response that will be spoken by Alexa
     buildSpeechletResponse(outputText, shouldEndSession){
+        logger.exit()
         return {
             outputSpeech: {
                 type: 'SSML',
@@ -99,6 +109,10 @@ class MovieBuff {
                 }
             }
         }
+    }
+
+    sessionAttributes(){
+        return (this.event.session && this.event.session.attributes) || {}
     }
 
 }

@@ -5,6 +5,8 @@ const CONSTANTS = require('./constants'),
       MDB = require('./movies-db'),
       DB = require('./db.js')
 
+const logger = require('./logger')
+
 class FavouriteGenre{
 
     constructor(movieBuff){
@@ -16,6 +18,7 @@ class FavouriteGenre{
         var self = this
         switch(movieBuff.event.request.intent.name){
             case CONSTANTS.FAVOURITE_GENRE:{
+                logger.log('Favourite Genre called')
                 var sessionAttribute = {
                     intentSequence: CONSTANTS.MOVIE_RECOMMENDATION
                 }

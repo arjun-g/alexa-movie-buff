@@ -63,7 +63,7 @@ class PersonMovie{
                 break;
             }
             case CONSTANTS.YES_INTENT:{
-                var sessionAttribute = movieBuff.event.session.attributes
+                var sessionAttribute = movieBuff.sessionAttributes()
                 if(sessionAttribute.intentSequence === CONSTANTS.PERSON_MOVIES_INTENT){
                     var person = sessionAttribute.persons[sessionAttribute.personIndex]
                     var response = '<p>some of the top movies by <w role="ivona:NN">' + person.name + '</w>'
@@ -83,7 +83,7 @@ class PersonMovie{
                 break;
             }
             case CONSTANTS.NO_INTENT:{
-                var sessionAttribute = movieBuff.event.session.attributes
+                var sessionAttribute = movieBuff.sessionAttributes()
                 if(sessionAttribute.intentSequence === CONSTANTS.PERSON_MOVIES_INTENT){
                     sessionAttribute.personIndex++
                     if(sessionAttribute.persons.length === sessionAttribute.personIndex){

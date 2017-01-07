@@ -3,7 +3,7 @@ const gulp = require('gulp'),
       install = require("gulp-install"),
       del = require('del')
 
-gulp.task('package', ['npm'], () => {
+gulp.task('package', ['copy'], () => {
     return gulp.src(['tmp/node_modules/**/**', 'tmp/libs/**', 'tmp/index.js'], { base: './tmp' })
            .pipe(zip('movie-buff.zip'))
            .pipe(gulp.dest('dist'))

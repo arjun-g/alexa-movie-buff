@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/arjun-g/alexa-movie-buff#readme",
   "dependencies": {
+    "le_node": "^1.7.0",
     "moviedb": "^0.2.7",
     "redis": "^2.6.3",
     "underscore": "^1.8.3"

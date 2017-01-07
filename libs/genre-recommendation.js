@@ -5,6 +5,8 @@ const CONSTANTS = require('./constants'),
       MDB = require('./movies-db'),
       DB = require('./db.js')
 
+const logger = require('./logger')
+
 //To process all scenarios of Recommendation intent
 class GenreRecommendation{
 
@@ -67,14 +69,14 @@ class GenreRecommendation{
                 break;
             }
             case CONSTANTS.YES_INTENT:{
-                var sessionAttribute = movieBuff.event.session.attributes
+                var sessionAttribute = movieBuff.sessionAttributes()
                 if(sessionAttribute.intentSequence === CONSTANTS.MOVIE_RECOMMENDATION){ //When user answers YES when alexa asks whether they want to hear another movie in the genre
                     self.sayAboutGenreMovie(sessionAttribute.genreId, sessionAttribute.genreName, sessionAttribute)
                 }
                 break;
             }
             case CONSTANTS.NO_INTENT:{
-                var sessionAttribute = movieBuff.event.session.attributes
+                var sessionAttribute = movieBuff.sessionAttributes()
                 if(sessionAttribute.intentSequence === CONSTANTS.MOVIE_RECOMMENDATION){ //When user answers NO when alexa asks whether they want to hear another movie in the genre
                     movieBuff.context.succeed(
                         movieBuff.generateResponse(
